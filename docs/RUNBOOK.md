@@ -102,3 +102,12 @@ Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events r
 - Expected: `Remote Linux prerequisites are available`
 - Observed: `Linux x86_64; git, docker, k3s, python3 available`
 - Evidence: `SSH command output`
+
+## mint-hp-workspace-bootstrap — PASSED
+
+- Environment: `mint-hp`
+- Recorded: `2026-09-15T15:26:53.001390+00:00`
+- Command: `python3 scripts/bootstrap.py --non-interactive --name mint-hp --host mint-hp --remote-dir /home/lev/projects/cloud-native-bootcamp --apply --yes`
+- Expected: `Dedicated checkout and artifacts directories are created and writable`
+- Observed: `workspace-ready`
+- Evidence: `SSH verification output`
