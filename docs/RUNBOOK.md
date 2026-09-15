@@ -47,3 +47,21 @@ Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events r
 - Expected: `All tests pass`
 - Observed: `5 tests passed`
 - Evidence: `terminal output`
+
+## bootstrap-regression-suite — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T13:00:14.260423+00:00`
+- Command: `python3 -B -m unittest discover -s scripts -p 'test_*.py' -v`
+- Expected: `Bootstrap behavior is safe under success, rerun, failure, and unsafe input`
+- Observed: `9 tests passed`
+- Evidence: `terminal output`
+
+## mint-hp-readonly-preflight — PASSED
+
+- Environment: `mint-hp`
+- Recorded: `2026-09-15T13:00:14.309911+00:00`
+- Command: `python3 scripts/bootstrap.py --non-interactive --name mint-hp --host mint-hp --remote-dir /home/lev/projects/cloud-native-bootcamp --check --yes`
+- Expected: `Reachable Linux remote exposes required bootstrap CLIs`
+- Observed: `Linux x86_64; git, docker, k3s, python3 available`
+- Evidence: `SSH command output`

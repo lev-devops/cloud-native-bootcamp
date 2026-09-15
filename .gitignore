@@ -5,3 +5,5 @@ kubeconfig*
 secrets/
 __pycache__/
 *.py[cod]
+.local/
+environments/*/bootstrap.json
