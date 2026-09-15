@@ -1,0 +1,38 @@
+---
+- name: Create the local control environment
+  hosts: control
+  gather_facts: true
+  vars:
+    control_root: "{{ lookup('env', 'CONTROL_ROOT') | default(ansible_env.HOME ~ '/platform-control', true) }}"
+    required_commands:
+      - git
+      - python3
+      - ssh
+      - ansible-playbook
+  tasks:
+    - name: Require a supported control operating system
+      ansible.builtin.assert:
+        that: ansible_system in ['Darwin', 'Linux']
+        fail_msg: "Unsupported control OS: {{ ansible_system }}"
+
+    - name: Check required control commands
+      ansible.builtin.command: "command -v {{ item }}"
+      check_mode: false
+      loop: "{{ required_commands }}"
+      changed_when: false
+
+    - name: Create control project directories
+      ansible.builtin.file:
+        path: "{{ control_root }}/{{ item }}"
+        state: directory
+        mode: '0750'
+      loop:
+        - environments
+        - generated
+        - logs
+
+    - name: Write control environment identity
+      ansible.builtin.copy:
+        dest: "{{ control_root }}/CONTROL_ENVIRONMENT"
+        content: "created_by=cloud-native-bootcamp\nseed_commit={{ lookup('pipe', 'git rev-parse HEAD 2>/dev/null || echo unknown') }}\n"
+        mode: '0640'

@@ -21,6 +21,23 @@ python3 scripts/bootstrap.py --non-interactive --name mint-hp --host mint-hp --r
 
 Target state: Mint HP responds over verified SSH and reports Linux with required bootstrap tools.
 
+## Minimum control-environment seeder
+
+From the seed checkout, use a Python virtual environment and Ansible itself:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r ansible/requirements.txt
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --syntax-check
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --check
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml
+```
+
+Target state: a supported Mac/Linux control host has `~/platform-control/{environments,generated,logs}` and a `CONTROL_ENVIRONMENT` identity file. The check mode must pass before the apply command. The seed checkout is not modified. Command availability checks execute read-only during check mode.
+
+Record each command in `docs/runbook/EXECUTION_LOG.jsonl`.
+
 ## Remote workspace bootstrap
 
 Review the printed command, then run:

@@ -1,0 +1,23 @@
+---
+- name: Prepare an application environment host from the control environment
+  hosts: application
+  gather_facts: true
+  vars:
+    app_workspace: "{{ application_root | default('/home/' ~ ansible_user ~ '/platform-app', true) }}"
+  tasks:
+    - name: Require a supported application host
+      ansible.builtin.assert:
+        that:
+          - ansible_system == 'Linux'
+          - ansible_architecture in ['x86_64', 'aarch64']
+        fail_msg: "Unsupported application host: {{ ansible_system }}/{{ ansible_architecture }}"
+
+    - name: Create application workspace directories
+      ansible.builtin.file:
+        path: "{{ app_workspace }}/{{ item }}"
+        state: directory
+        mode: '0750'
+      loop:
+        - checkout
+        - artifacts
+        - logs
