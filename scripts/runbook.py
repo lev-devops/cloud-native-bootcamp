@@ -5,8 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EVENTS = ROOT / 'docs' / 'runbook' / 'events.jsonl'
-RUNBOOK = ROOT / 'docs' / 'RUNBOOK.md'
+EVENTS = ROOT / 'docs' / 'runbook' / 'EXECUTION_LOG.jsonl'
 
 def now(): return datetime.now(timezone.utc).isoformat()
 def record(args):
@@ -16,18 +15,7 @@ def record(args):
              'expected': args.expect or '', 'observed': args.observed or '',
              'evidence': args.evidence or '', 'correction': args.correction or ''}
     with EVENTS.open('a', encoding='utf-8') as f: f.write(json.dumps(event, sort_keys=True) + '\n')
-    render()
     print(f"recorded {args.status}: {args.step}")
-def render():
-    events = [json.loads(x) for x in EVENTS.read_text().splitlines() if x.strip()] if EVENTS.exists() else []
-    lines = ['# Verified Runbook', '', 'Generated from append-only `docs/runbook/events.jsonl`.', '',
-             'Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events remain visible.', '']
-    for e in events:
-        lines += [f"## {e['step']} — {e['status']}", '', f"- Environment: `{e['environment']}`", f"- Recorded: `{e['timestamp']}`"]
-        for label in ('command','expected','observed','evidence','correction'):
-            if e.get(label): lines.append(f"- {label.title()}: `{e[label]}`")
-        lines.append('')
-    RUNBOOK.write_text('\n'.join(lines), encoding='utf-8')
 def main():
     p = argparse.ArgumentParser(); sub = p.add_subparsers(dest='action', required=True)
     for status in ('STARTED','PASSED','FAILED','CORRECTED','BLOCKED'):

@@ -8,9 +8,25 @@ from pathlib import Path
 from unittest.mock import patch
 
 import bootstrap
+import runbook
 
 
 class BootstrapTests(unittest.TestCase):
+    def test_execution_log_does_not_rewrite_runbook(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            old_events, old_root = runbook.EVENTS, runbook.ROOT
+            guide = root / 'RUNBOOK.md'; guide.write_text('stable guide\n')
+            runbook.EVENTS = root / 'EXECUTION_LOG.jsonl'
+            try:
+                args = type('Args', (), {'status': 'PASSED', 'step': 'test', 'env': 'local',
+                    'command': 'true', 'expect': 'pass', 'observed': 'ok',
+                    'evidence': 'test output', 'correction': ''})()
+                runbook.record(args)
+                self.assertEqual(guide.read_text(), 'stable guide\n')
+                self.assertEqual(len(runbook.EVENTS.read_text().splitlines()), 1)
+            finally:
+                runbook.EVENTS, runbook.ROOT = old_events, old_root
     def test_apply_and_rerun_preserve_profile(self):
         with tempfile.TemporaryDirectory() as tmp:
             profile = Path(tmp) / 'profiles' / 'test' / 'bootstrap.json'
