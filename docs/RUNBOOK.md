@@ -1,0 +1,49 @@
+# Verified Runbook
+
+Generated from append-only `docs/runbook/events.jsonl`.
+
+Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events remain visible.
+
+## bootstrap-wizard-tests — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T00:00:00Z`
+- Expected: `bootstrap unit tests pass`
+- Observed: `5 tests passed`
+- Evidence: `scripts/test_bootstrap.py: 5 tests passed`
+
+## public-package-docs — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T12:12:21.014618+00:00`
+- Command: `README.md, LICENSE, CONTRIBUTING.md, SECURITY.md review`
+- Expected: `Public scope and safety guidance are explicit`
+- Observed: `Files present; current milestone and secret boundaries documented`
+- Evidence: `working tree inspection`
+
+## bootstrap-test-suite — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T12:12:21.146327+00:00`
+- Command: `python3 -m unittest discover -s scripts -p 'test_*.py' -v`
+- Expected: `All tests pass`
+- Observed: `5 tests passed`
+- Evidence: `terminal output`
+
+## public-package-docs — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T12:14:34.350959+00:00`
+- Command: `README.md, LICENSE, CONTRIBUTING.md, SECURITY.md review`
+- Expected: `Public scope and safety guidance are explicit`
+- Observed: `Files present; current milestone and secret boundaries documented`
+- Evidence: `working tree inspection`
+
+## bootstrap-test-suite — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T12:14:34.485612+00:00`
+- Command: `python3 -m unittest discover -s scripts -p 'test_*.py' -v`
+- Expected: `All tests pass`
+- Observed: `5 tests passed`
+- Evidence: `terminal output`

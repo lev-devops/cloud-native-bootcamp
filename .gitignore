@@ -1,0 +1,7 @@
+*.tfstate*
+.terraform/
+.env*
+kubeconfig*
+secrets/
+__pycache__/
+*.py[cod]
