@@ -84,3 +84,21 @@ Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events r
 - Expected: `Legacy and new events render successfully`
 - Observed: `Runbook regenerated and later events recorded`
 - Evidence: `docs/RUNBOOK.md`
+
+## public-seed-verified — PASSED
+
+- Environment: `local`
+- Recorded: `2026-09-15T15:25:38.336014+00:00`
+- Command: `git fetch origin; git rev-parse HEAD; git rev-parse origin/main`
+- Expected: `Published seed and local main are identical`
+- Observed: `Both resolve to a50888522c0aef6c0a5f239ab74965d653a44481`
+- Evidence: `git command output`
+
+## mint-hp-readonly-preflight — PASSED
+
+- Environment: `mint-hp`
+- Recorded: `2026-09-15T15:25:38.378994+00:00`
+- Command: `python3 scripts/bootstrap.py --non-interactive --name mint-hp --host mint-hp --remote-dir /home/lev/projects/cloud-native-bootcamp --check --yes`
+- Expected: `Remote Linux prerequisites are available`
+- Observed: `Linux x86_64; git, docker, k3s, python3 available`
+- Evidence: `SSH command output`
