@@ -30,11 +30,11 @@ python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r ansible/requirements.txt
 ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --syntax-check
-ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --check
-ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --check -e control_root="$HOME/platform-control"
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml -e control_root="$HOME/platform-control"
 ```
 
-Target state: a supported Mac/Linux control host has `~/platform-control/{environments,generated,logs}` and a `CONTROL_ENVIRONMENT` identity file. The check mode must pass before the apply command. The seed checkout is not modified. Command availability checks execute read-only during check mode.
+Target state: a supported Mac/Linux control host has a new or empty explicit target with `~/platform-control/{environments,generated,logs}` and a `CONTROL_ENVIRONMENT` identity file. The check mode must pass before the apply command. A non-empty target is refused. After reviewing it, explicitly opt in with `-e control_overwrite=true`; this does not delete unrelated files. The seed checkout is not modified. Command availability checks execute read-only during check mode.
 
 Record each command in `docs/runbook/EXECUTION_LOG.jsonl`.
 

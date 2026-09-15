@@ -29,8 +29,8 @@ The supported platform-creator path uses standard Ansible commands. The local pl
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -r ansible/requirements.txt
-ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --check
-ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml --check -e control_root="$HOME/platform-control"
+ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml -e control_root="$HOME/platform-control"
 ansible-playbook -i ansible/inventory/mint-hp.ini ansible/control-remote.yml --check
 ```
 

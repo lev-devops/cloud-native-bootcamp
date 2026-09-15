@@ -4,12 +4,39 @@
   gather_facts: true
   vars:
     control_root: "{{ lookup('env', 'CONTROL_ROOT') | default(ansible_env.HOME ~ '/platform-control', true) }}"
+    control_overwrite: false
     required_commands:
       - git
       - python3
       - ssh
       - ansible-playbook
   tasks:
+    - name: Inspect the requested control target
+      ansible.builtin.stat:
+        path: "{{ control_root }}"
+        follow: false
+      register: control_target
+
+    - name: Refuse a symlink control target
+      ansible.builtin.assert:
+        that: not control_target.stat.islnk | default(false)
+        fail_msg: "Control target must not be a symlink: {{ control_root }}"
+
+    - name: Inspect existing control target contents
+      ansible.builtin.find:
+        paths: "{{ control_root }}"
+        recurse: true
+        hidden: true
+        file_type: any
+      register: control_contents
+      when: control_target.stat.exists and control_target.stat.isdir
+
+    - name: Require a new or empty control target unless explicitly overridden
+      ansible.builtin.assert:
+        that:
+          - not control_target.stat.exists or not control_target.stat.isdir or (control_contents.matched | default(0) | int) == 0 or (control_overwrite | bool)
+        fail_msg: "Control target exists and is non-empty: {{ control_root }}. Use -e control_overwrite=true only after review."
+
     - name: Require a supported control operating system
       ansible.builtin.assert:
         that: ansible_system in ['Darwin', 'Linux']
