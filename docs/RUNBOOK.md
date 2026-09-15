@@ -65,3 +65,22 @@ Only `PASSED` events are verified. `FAILED`, `CORRECTED`, and `BLOCKED` events r
 - Expected: `Reachable Linux remote exposes required bootstrap CLIs`
 - Observed: `Linux x86_64; git, docker, k3s, python3 available`
 - Evidence: `SSH command output`
+
+## runbook-renderer — FAILED
+
+- Environment: `local`
+- Recorded: `2026-09-15T13:01:17.481078+00:00`
+- Command: `python3 scripts/runbook.py passed ...`
+- Expected: `Record event and regenerate RUNBOOK.md`
+- Observed: `KeyError on legacy event missing command field`
+- Evidence: `terminal traceback`
+- Correction: `Use e.get(label) for legacy event compatibility`
+
+## runbook-renderer — CORRECTED
+
+- Environment: `local`
+- Recorded: `2026-09-15T13:01:17.515564+00:00`
+- Command: `python3 scripts/runbook.py passed ...`
+- Expected: `Legacy and new events render successfully`
+- Observed: `Runbook regenerated and later events recorded`
+- Evidence: `docs/RUNBOOK.md`
