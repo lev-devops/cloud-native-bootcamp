@@ -5,11 +5,15 @@
   vars:
     control_root: "{{ lookup('env', 'CONTROL_ROOT') | default(ansible_env.HOME ~ '/platform-control', true) }}"
     control_overwrite: false
+    seed_repository: "https://github.com/lev-devops/cloud-native-bootcamp.git"
+    seed_ref: main
+    seed_checkout: "{{ control_root }}/project"
     required_commands:
       - git
       - python3
       - ssh
       - ansible-playbook
+      - mise
   tasks:
     - name: Inspect the requested control target
       ansible.builtin.stat:
@@ -36,6 +40,26 @@
         that:
           - not control_target.stat.exists or not control_target.stat.isdir or (control_contents.matched | default(0) | int) == 0 or (control_overwrite | bool)
         fail_msg: "Control target exists and is non-empty: {{ control_root }}. Use -e control_overwrite=true only after review."
+
+    - name: Clone the seed into the detached control project
+      ansible.builtin.git:
+        repo: "{{ seed_repository }}"
+        version: "{{ seed_ref }}"
+        dest: "{{ seed_checkout }}"
+        single_branch: true
+        depth: 1
+
+    - name: Create a Python environment for control tooling
+      ansible.builtin.command: "python3 -m venv {{ control_root }}/.venv"
+      args:
+        creates: "{{ control_root }}/.venv/bin/activate"
+
+    - name: Install the seed-declared control toolchain
+      ansible.builtin.command: mise install
+      args:
+        chdir: "{{ seed_checkout }}"
+      register: mise_install
+      changed_when: mise_install.rc == 0
 
     - name: Require a supported control operating system
       ansible.builtin.assert:

@@ -36,6 +36,8 @@ ansible-playbook -i ansible/inventory/localhost.ini ansible/control-local.yml -e
 
 Target state: a supported Mac/Linux control host has a new or empty explicit target with `~/platform-control/{environments,generated,logs}` and a `CONTROL_ENVIRONMENT` identity file. The check mode must pass before the apply command. A non-empty target is refused. After reviewing it, explicitly opt in with `-e control_overwrite=true`; this does not delete unrelated files. The seed checkout is not modified. Command availability checks execute read-only during check mode.
 
+The apply also clones the public seed into `~/platform-control/project`, creates `~/platform-control/.venv`, and runs `mise install` in the clone. `mise` must already be installed on the control host; the seed does not execute an unreviewed installer. The declared toolchain is Node, Python, Java, Terraform, Helm, and kubectl.
+
 Record each command in `docs/runbook/EXECUTION_LOG.jsonl`.
 
 ## Remote workspace bootstrap

@@ -2,6 +2,9 @@
 node = "24"
 python = "3.12"
 java = "temurin-17"
+terraform = "1.9"
+helm = "3.16"
+kubectl = "1.31"
 
 [settings]
 lockfile = true

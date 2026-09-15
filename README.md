@@ -19,7 +19,7 @@ python3 scripts/bootstrap.py --apply
 python3 -m unittest discover -s scripts -p 'test_*.py' -v
 ```
 
-The full Ansible, Terraform, Helm, Jenkins, registry, k3s, and Prometheus layers are subsequent milestones and are not represented as complete yet. See [docs/RUNBOOK.md](docs/RUNBOOK.md) for verified work and [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md) for scope and recovery.
+The full Terraform platform, Helm release, Jenkins delivery, registry, k3s, and Prometheus layers are subsequent milestones. The seed now includes the minimum application, Docker, Jenkins, and Ansible control templates. See [docs/RUNBOOK.md](docs/RUNBOOK.md) for verified work and [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md) for scope and recovery.
 
 ## Minimum seeder path
 
